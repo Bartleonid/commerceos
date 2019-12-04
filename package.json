@@ -1,0 +1,20 @@
+{
+  "name": "Lenja",
+  "version": "1.0.0",
+  "description": "Commerceos testing",
+  "main": "test.js",
+  "dependencies": {
+    "chai": "^3.5.2",
+    "chromedriver": "^78.0.1",
+    "selenium-webdriver": "^3.6.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2",
+    "chai": "^3.5.2"
+  },
+  "scripts": {
+    "test": "mocha ./test/test.js"
+  },
+  "author": "Leonid Bartashchuk",
+  "license": "ISC"
+}
