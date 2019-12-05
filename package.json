@@ -4,16 +4,16 @@
   "description": "Commerceos testing",
   "main": "test.js",
   "dependencies": {
-    "chai": "^3.5.2",
+    "chai": "^4.2.0",
     "chromedriver": "^78.0.1",
     "selenium-webdriver": "^3.6.0"
   },
   "devDependencies": {
     "mocha": "^6.2.2",
-    "chai": "^3.5.2"
+    "chai": "^4.2.0"
   },
   "scripts": {
-    "test": "mocha ./test/test.js"
+    "test": "mocha"
   },
   "author": "Leonid Bartashchuk",
   "license": "ISC"

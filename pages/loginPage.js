@@ -13,8 +13,9 @@ class LoginPage {
                 util.type(driver, username, 'aqa@payever.org');
                 util.type(driver, password, 'Aqacool123!');
                 util.click(driver, btn);
-            } catch (e) {
-                console.log(e + 'was not able to login...');
+            } catch (error) {
+                console.log(error + 'user is not able to login ');
+                assert.fail
             }
         }
 }
