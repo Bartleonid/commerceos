@@ -8,13 +8,13 @@ const shopIcon = By.css("[data-pe-app='shop']");
 
 class HomePage {
 
-        openShop(driver) {
+       async openShop(driver) {
             try {
-                util.click(driver, businessBtn);
-                util.click(driver, shopIcon);
+                await util.click(driver, businessBtn);
+                await util.click(driver, shopIcon);
             } catch (error) {
                 console.log(error, "shop is not open ");
-                assert.fail;
+                assert.fail();
             }
         }
 }

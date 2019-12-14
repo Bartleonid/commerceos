@@ -8,11 +8,11 @@ const btn = By.css("button[type='submit']");
 
 class LoginPage {
 
-        login(driver) {
+        async login(driver) {
             try {
-                util.type(driver, username, 'aqa@payever.org');
-                util.type(driver, password, 'Aqacool123!');
-                util.click(driver, btn);
+               await util.type(driver, username, 'aqa@payever.org');
+               await util.type(driver, password, 'Aqacool123!');
+               await util.click(driver, btn);
             } catch (error) {
                 console.log(error + 'user is not able to login ');
                 assert.fail

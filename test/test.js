@@ -1,40 +1,60 @@
-var assert = require('chai').assert;
-var should = require('chai').should();
-var expect = require('chai').expect;
-var chai = require('chai');  
+let assert = require('chai').assert;
+let should = require('chai').should();
+let expect = require('chai').expect;
+let chai = require('chai');  
+let { Builder, By, until } = require('selenium-webdriver');
 
-const Utility = require('../utility/utility');
-const util = new Utility();
-const LoginPage = require('../pages/loginPage');
-const lgPage = new LoginPage();
-const HomePage = require('../pages/homePage');
-const hmPage = new HomePage();
+let Utility = require('../utility/utility');
+let util = new Utility();
+let LoginPage = require('../pages/loginPage');
+let lgPage = new LoginPage();
+let HomePage = require('../pages/homePage');
+let hmPage = new HomePage();
+let ThemePage = require('../pages/themePage');
+let thPage = new ThemePage();
 
-const { Builder, By, until } = require('selenium-webdriver');
-const driver = new Builder().forBrowser('chrome').build();
 const timeout = 10000;
-const businessBtn = By.xpath('//span[contains(text(), "Business")]');
+const url = 'https://commerceous.staging.devpayever.com';
+// const url = 'https://google.com';
+let driver = new Builder().forBrowser('chrome').build();
+const front = By.xpath("//div[contains(text(), 'Front')]");
+const expectedThemeText = By.xpath("//span[.='This test is completed!']");
 
-describe('Test Case #1: CRUD new theme.', function() {
-    before(function() {
-        driver.get('https://commerceous.staging.devpayever.com');
+describe('Test Case #1: CRUD new theme.', async function() {
+    
+    before(async function() {
+        this.timeout(60000);
+        await driver.get(url);
+        await driver.wait(until.titleIs('payever'), timeout);
     });
-    it('User can login', function(done) {
-        lgPage.login(driver);
-        driver.then(title => driver.getTitle()).then(title => assert.equal(title, 'payever'));
+    // it('User can login', async function(done) {
+    //     let q = By.name('qq');
+    //     util.type(driver, q, "nodejs")
+    //     .then(() => driver.quit());
+    //     done();
+    // });
+    it('User can login', async function(done) {
+       lgPage.login(driver);
+       done();
+    });
+    it('Shop app can be opened', async function(done) {
+       hmPage.openShop(driver);
+       done();
+       let frontElem = await util.wait(driver, front);
+       assert.isNotNull(frontElem);
+    });
+    it('New theme can be created', async function(done) {
+        thPage.createTheme(driver);
+        // let expectedText =  await util.getElementText(driver, expectedThemeText);
+        // assert.equals(expectedText, expectedThemeText);
         done();
-    });
-    it('Shop app can be opened', function(done) {
-        hmPage.openShop(driver);
-        done();
-    });
-    it('New theme can be created', function(done) {
-        hmPage.openShop(driver);
-        done();
-    });
+        // await util.wait(driver, font).then(() => driver.quit());
+        // let elem = await driver.findElements(By.xpath("//div[contains(text(), 'Front')]"));
+        // assert.isNotEmpty(elem).then(() => driver.quit());
+        // done();
+     });
+
 });
-// after(function(done) {
-//     return driver.quit();
-//   });
+
 
 

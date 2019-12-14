@@ -1,46 +1,92 @@
 
-const { Builder, By, until } = require('selenium-webdriver');
-var assert = require('chai').assert;
-const timeout = 10000;
+let { Builder, By, until } = require('selenium-webdriver');
+let assert = require('chai').assert;
+const timeout = 30000;
 
 class Utility {
 
-	wait(driver, by) {
+	async wait(driver, by) {
 		try {
-			driver.wait(until.elementLocated(by), timeout);
-			var element = driver.findElement(by);
-			driver.wait(until.elementIsVisible(element), timeout);
+			await driver.wait(until.elementLocated(by), timeout);
+			var element = await driver.findElement(by);
+			await driver.wait(until.elementIsVisible(element), timeout);
 		} catch (e) {
-			console.log(e + `waiting for element exceeded timeout: ${by}`);
-			throw new Error(e + `waiting for element exceeded timeout: ${by}`);
-			assert.fail;
+			throw new Error(e + 'waiting for element exceeded timeout:' + by);
 		}
+		return element;
 	}
 
-	click(driver, by) {
+	async click(driver, by) {
 		try {
-			this.wait(driver, by);
-			driver.findElement(by).click();
+			await this.wait(driver, by);
+			await driver.findElement(by).click();
 			console.log('element ' + by + ' is clicked');
 		} catch (e) {
-			console.log(e + 'element is not clicked :' + by);
 			throw new Error(e + 'element is not clicked :' + by);
-			assert.fail;
 		}
 	}
 
-	type(driver, by, text) {
+	
+	async doubleClick(driver, by) {
 		try {
-			this.wait(driver, by);
-			driver.findElement(by).sendKeys(text);
-			console.log('typing ' + text + ' into ' + by);
-		} catch (error) {
-			console.log(e + 'text is not typed into :' + by);
-			throw new Error(e + 'text is not typed into :' + by);
-			assert.fail;
+			await this.wait(driver, by);
+			await driver.findElement(by).doubleClick();
+			console.log('element ' + by + ' is double clicked');
+		} catch (e) {
+			throw new Error(e + 'element is not double clicked :' + by);
 		}
+	}
+	
+	async type(driver, by, text) {
+		try {
+			await this.wait(driver, by);
+			await driver.findElement(by).sendKeys(text);
+			console.log('typing ' + text + ' into ' + by);
+		} catch (e) {
+			throw new Error(e + 'text is not typed into :' + by);
+		}
+	}
+	
+	async getElementText(driver, by) {
+		try {
+			await this.wait(driver, by);
+			let elemText = await driver.findElement(by).getText();
+			console.log(' typing ' + text + ' into ' + by);
+		} catch (e) {
+			throw new Error(e + ' text is not typed into :' + by);
+		}
+		return elemText;
+	}
+	
+	async typeInShadowElement(driver, shadowRootElem, shadowDomElement, text) {
+		try {
+			element = await this.findShadowDomElement(driver, shadowRootElem, shadowDomElement);
+			console.log(' expected element :' + element);
+			console.log('typing ' + text + ' into ' + shadowDomElement);
+		} catch (e) {
+			throw new Error(e + ' text is not typed into :' + shadowDomElement);
+		}
+	}
+
+	async findShadowDomElement(driver, shadowDomElement) {  
+		let element;  
+//		await (shadowRoot = this.getExtShadowRoot(driver, shadowRootElem));
+		// await shadowRoot.then(async (result) => {
+			   await (element = driver.findElement(shadowDomElement).type(text));  
+			   return element
+			// });
+  
+}
+
+async expandRootElement(driver, by) { 
+	   let shadowHost;
+	//    await (shadowHost = driver.findElement(by));  
+	   let element = driver.executeScript("return arguments[0].shadowRoot", by);
+	   console.log(' expected test :' + element);
+	   return element;
 	}
 
 }
+
 
 module.exports = Utility;
